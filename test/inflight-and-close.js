@@ -17,17 +17,17 @@ test('inflight and close', async (t) => {
     request(url)
       .then(({ statusCode, headers, body }) => {
         t.ok(true, 'first response')
-        body.resume()
         body.on('close', function () {
           t.ok(true, 'first body closed')
         })
+        body.resume()
         return request(url)
           .then(({ statusCode, headers, body }) => {
             t.ok(true, 'second response')
-            body.resume()
             body.on('close', function () {
               server.close()
             })
+            body.resume()
           })
       }).catch((err) => {
         t.ifError(err)
